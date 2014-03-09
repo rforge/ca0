@@ -1,0 +1,5 @@
+Version 0.55 (2014-03-09)
+
+o plot.ca() and plot.mjca() now provide sensible default xlab and ylab
+o both return a result containing the plotted coordinates, for use in further plot annotation
+o mjca() now accepts a table object as input, using internal expand.dft

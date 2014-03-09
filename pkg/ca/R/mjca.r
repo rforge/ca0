@@ -1,5 +1,6 @@
 # MF: changed default ps=":" to allow working with the output coordinates
 # MF: cleaned up code for checking lambda
+# MF: mjca now accepts a table object, using expand.dft
 
 mjca <- function(obj, 
                  nd = 2, 
@@ -37,6 +38,11 @@ mjca <- function(obj,
  ### End check 'lambda'
 
  ### check input data
+
+ # allow for table input
+ if (is.table(obj)) {
+	 obj <- expand.dft(obj)
+ }
  ### BELOW: edit from GR (2011-09):
  # if(!is.data.frame(obj)){
     obj <- data.frame(lapply(data.frame(obj), factor)) 
