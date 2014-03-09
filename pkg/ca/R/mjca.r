@@ -1,9 +1,12 @@
+# MF: changed default ps=":" to allow working with the output coordinates
+# MF: cleaned up code for checking lambda
+
 mjca <- function(obj, 
                  nd = 2, 
-                 lambda = "adjusted", 
+                 lambda = c("adjusted", "indicator", "Burt", "JCA"), 
                  supcol = NA, 
                  subsetcol = NA, 
-                 ps = "", 
+                 ps = ":", 
                  maxit = 50, 
                  epsilon = 0.0001){
 
@@ -11,26 +14,28 @@ mjca <- function(obj,
  ##### Part 1: Input checks:
 ################################################################################
  ### Check for valid argument in 'lambda'
-  lam.v0 <- c("indicator", "Burt", "adjusted", "JCA")
-  lam.v1 <- c("i", "B", "a", "J")
-  if (length(grep(tolower(lambda), tolower(lam.v0), fixed = TRUE)) != 0){
-    lambda <- lam.v0[grep(tolower(lambda), tolower(lam.v0), fixed = TRUE)[1]]
-    } else {
- # Only first letter specified?
-    if (length(grep(tolower(lambda), lam.v1)) == 1){
-      lambda <- lam.v0[grep(tolower(lambda), lam.v1)]
-      } else {
- # "Fuzzy matching" unique?
-	  if (length(agrep(tolower(lambda), tolower(lam.v0))) == 1 ) {
-        lambda <- lam.v0[agrep(tolower(lambda), tolower(lam.v0))]
-        } else {
-        stop(paste("\nInvalid 'lambda' specification. Valid values are:\n", 
-                   paste("\"", lam.v0, "\" ", c(",", ",", "and ", "."), 
-                         sep = "", collapse = ""), collapse = "", sep = ""))
-        }
-      }
-    }
+  lambda <- match.arg(lambda)
+#  lam.v0 <- c("indicator", "Burt", "adjusted", "JCA")
+#  lam.v1 <- c("i", "B", "a", "J")
+#  if (length(grep(tolower(lambda), tolower(lam.v0), fixed = TRUE)) != 0){
+#    lambda <- lam.v0[grep(tolower(lambda), tolower(lam.v0), fixed = TRUE)[1]]
+#    } else {
+# # Only first letter specified?
+#    if (length(grep(tolower(lambda), lam.v1)) == 1){
+#      lambda <- lam.v0[grep(tolower(lambda), lam.v1)]
+#      } else {
+# # "Fuzzy matching" unique?
+#	  if (length(agrep(tolower(lambda), tolower(lam.v0))) == 1 ) {
+#        lambda <- lam.v0[agrep(tolower(lambda), tolower(lam.v0))]
+#        } else {
+#        stop(paste("\nInvalid 'lambda' specification. Valid values are:\n", 
+#                   paste("\"", lam.v0, "\" ", c(",", ",", "and ", "."), 
+#                         sep = "", collapse = ""), collapse = "", sep = ""))
+#        }
+#      }
+#    }
  ### End check 'lambda'
+
  ### check input data
  ### BELOW: edit from GR (2011-09):
  # if(!is.data.frame(obj)){
@@ -153,10 +158,6 @@ mjca <- function(obj,
  ### Set up data
  # Indicator and Burt matrix:
   Z.0      <- matrix(0, nrow = I.0, ncol = J.0)
- # Edit 0.54:
-  colnames(Z.0) <- col.names
-  rownames(Z.0) <- 1:I.0
- ###
   newdat   <- lapply(obj, as.numeric)
   offset.b <- c(0, n.0)
   offset   <- c(0, n.0[-length(n.0)])
@@ -165,10 +166,6 @@ mjca <- function(obj,
   fn         <- rep(names(obj), unlist(lapply(obj, nlevels)))
   ln         <- unlist(lapply(obj,levels))
   B.0        <- t(Z.0) %*% Z.0
- # Edit 0.54:
-  colnames(B.0) <- col.names
-  rownames(B.0) <- col.names
- ###
   B          <- B.0[ind, ind]
   Z          <- Z.0[,ind]
   P          <- B / sum(B)
@@ -651,7 +648,7 @@ if (lambda == "adjusted"){
                       subsetcol  = subsetcol,
                       Burt       = B.out,
                       Burt.upd   = B.star,
-                      subinertia = 100*subin,
+                      subinertia = subin,
                       JCA.iter   = JCA.it,
                       call       = match.call())
   class(mjca.output) <- "mjca"

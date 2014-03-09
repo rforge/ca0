@@ -2,8 +2,9 @@
 \alias{mjca}
 \title{Multiple and joint correspondence analysis}
 \description{Computation of multiple and joint correspondence analysis.}
-\usage{mjca(obj, nd = 2, lambda = "adjusted", supcol = NA, subsetcol = NA, 
-     ps = "", maxit = 50, epsilon = 0.0001)}
+\usage{mjca(obj, nd = 2, lambda = c("adjusted", "indicator", "Burt", "JCA"), 
+     supcol = NA, subsetcol = NA, 
+     ps = ":", maxit = 50, epsilon = 0.0001)}
 \arguments{
   \item{obj      }{A response pattern matrix (data frame containing factors).}
   \item{nd       }{Number of dimensions to be included in the output; if NA the maximum possible dimensions are included.}
