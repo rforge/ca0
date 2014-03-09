@@ -1,0 +1,190 @@
+<html><head><title>Multiple and joint correspondence analysis</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link rel="stylesheet" type="text/css" href="Rchm.css">
+</head>
+<body>
+
+<table width="100%"><tr><td>mjca(ca)</td><td align="right">R Documentation</td></tr></table><object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="keyword" value="R:   mjca">
+<param name="keyword" value=" Multiple and joint correspondence analysis">
+</object>
+
+
+<h2>Multiple and joint correspondence analysis</h2>
+
+
+<h3>Description</h3>
+
+<p>
+Computation of multiple and joint correspondence analysis.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>mjca(obj, nd = 2, lambda = "adjusted", supcol = NA, subsetcol = NA, 
+     ps = "", maxit = 50, epsilon = 0.0001)</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>obj      </code></td>
+<td>
+A response pattern matrix (data frame containing factors).</td></tr>
+<tr valign="top"><td><code>nd       </code></td>
+<td>
+Number of dimensions to be included in the output; if NA the maximum possible dimensions are included.</td></tr>
+<tr valign="top"><td><code>lambda   </code></td>
+<td>
+Gives the scaling method. Possible values include <KBD>"indicator"</KBD>, <KBD>"Burt"</KBD>, <KBD>"adjusted"</KBD> and <KBD>"JCA"</KBD>.
+Using <KBD>lambda = "JCA"</KBD> results in a joint correspondence analysis using iterative adjusment of the Burt matrix in the solution space.</td></tr>
+<tr valign="top"><td><code>supcol   </code></td>
+<td>
+Indices of supplementary columns.</td></tr>
+<tr valign="top"><td><code>subsetcol</code></td>
+<td>
+Indices of subset categories.</td></tr>
+<tr valign="top"><td><code>ps       </code></td>
+<td>
+Separator used for combining variable and category names.</td></tr>
+<tr valign="top"><td><code>maxit    </code></td>
+<td>
+The maximum number of iterations (Joint Correspondence Analysis).</td></tr>
+<tr valign="top"><td><code>epsilon  </code></td>
+<td>
+A convergence criterion (Joint Correspondence Analysis).</td></tr>
+</table>
+
+<h3>Details</h3>
+
+<p>
+The function <code>mjca</code> computes a multiple or joint correspondence analysis based on the eigenvalue decomposition of the Burt matrix.
+</p>
+
+
+<h3>Value</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>sv         </code></td>
+<td>
+Eigenvalues (<KBD>lambda = "indicator"</KBD>) or singular values (<KBD>lambda = "Burt"</KBD>, <KBD>"adjusted"</KBD> or <KBD>"JCA"</KBD>) </td></tr>
+<tr valign="top"><td><code>lambda     </code></td>
+<td>
+Scaling method</td></tr>
+<tr valign="top"><td><code>inertia.e  </code></td>
+<td>
+Percentages of explained inertia</td></tr>
+<tr valign="top"><td><code>inertia.t  </code></td>
+<td>
+Total inertia</td></tr>
+<tr valign="top"><td><code>inertia.et </code></td>
+<td>
+Total percentage of explained inertia with the <code>nd</code>-dimensional solution</td></tr>
+<tr valign="top"><td><code>levelnames </code></td>
+<td>
+Names of the factor/level combinations</td></tr>
+<tr valign="top"><td><code>levels.n   </code></td>
+<td>
+Number of levels in each factor</td></tr>
+<tr valign="top"><td><code>nd         </code></td>
+<td>
+User-specified dimensionality of the solution</td></tr>
+<tr valign="top"><td><code>nd.max     </code></td>
+<td>
+Maximum possible dimensionality of the solution</td></tr>
+<tr valign="top"><td><code>rownames   </code></td>
+<td>
+Row names</td></tr>
+<tr valign="top"><td><code>rowmass    </code></td>
+<td>
+Row masses</td></tr>
+<tr valign="top"><td><code>rowdist    </code></td>
+<td>
+Row chi-square distances to centroid</td></tr>
+<tr valign="top"><td><code>rowinertia </code></td>
+<td>
+Row inertias</td></tr>
+<tr valign="top"><td><code>rowcoord   </code></td>
+<td>
+Row standard coordinates</td></tr>
+<tr valign="top"><td><code>colnames   </code></td>
+<td>
+Column names</td></tr>
+<tr valign="top"><td><code>colmass    </code></td>
+<td>
+Column masses</td></tr>
+<tr valign="top"><td><code>coldist    </code></td>
+<td>
+Column chi-square distances to centroid</td></tr>
+<tr valign="top"><td><code>colinertia </code></td>
+<td>
+Column inertias</td></tr>
+<tr valign="top"><td><code>colcoord   </code></td>
+<td>
+Column standard coordinates</td></tr>
+<tr valign="top"><td><code>colsup     </code></td>
+<td>
+Indices of column supplementary points (of the Burt and Indicator matrix)</td></tr>
+<tr valign="top"><td><code>subsetcol  </code></td>
+<td>
+Indices of subset columns</td></tr>
+<tr valign="top"><td><code>Burt       </code></td>
+<td>
+Burt matrix</td></tr>
+<tr valign="top"><td><code>Burt.upd   </code></td>
+<td>
+The updated Burt matrix (JCA only)</td></tr>
+<tr valign="top"><td><code>subinertia </code></td>
+<td>
+Inertias of sub-matrices</td></tr>
+<tr valign="top"><td><code>JCA.iter   </code></td>
+<td>
+Vector of length two containing the number of iterations and the epsilon (JCA only)</td></tr>
+<tr valign="top"><td><code>call       </code></td>
+<td>
+Return of <code>match.call</code></td></tr>
+</table>
+
+<h3>References</h3>
+
+<p>
+Nenadic, O. and Greenacre, M. (2007), Correspondence analysis in R, with two- and three-dimensional graphics: The ca package. Journal of Statistical Software, 20 (3), available at <a href="http://www.jstatsoft.org/v20/i03/">http://www.jstatsoft.org/v20/i03/</a><br>
+Nenadic, O. and Greenacre, M. (2007), Computation of Multiple Correspondence Analysis, with Code in R, in Multiple Correspondence Analysis and Related Methods (eds. M. Greenacre and J. Blasius), Chapmann &amp; Hall / CRC, Boca Raton, London, New York, pp. 523-551.<br>
+Greenacre, M.J. and Pardo, R. (2006), Subset correspondence analysis: visualizing relationships among a selected set of response categories from a questionnaire survey. Sociological Methods and Research, 35, pp. 193-218.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>
+<code><a onclick="findlink('base', 'eigen.html')" style="text-decoration: underline; color: blue; cursor: hand">eigen</a></code>, <code><a href="plot.mjca.html">plot.mjca</a></code>, <code><a href="summary.mjca.html">summary.mjca</a></code>, <code><a href="print.mjca.html">print.mjca</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre> 
+library(MASS)
+data(farms)
+mjca(farms)
+
+# Joint correspondence analysis:
+mjca(farms, lambda = "JCA")
+
+ </pre>
+
+<script Language="JScript">
+function findlink(pkg, fn) {
+var Y, link;
+Y = location.href.lastIndexOf("\\") + 1;
+link = location.href.substring(0, Y);
+link = link + "../../" + pkg + "/chtml/" + pkg + ".chm::/" + fn;
+location.href = link;
+}
+</script>
+
+
+<hr><div align="center">[Package <em>ca</em> version 0.33 <a href="00Index.html">Index</a>]</div>
+
+</body></html>
