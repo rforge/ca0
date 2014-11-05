@@ -1,5 +1,7 @@
 # Modified 1-12-11 (MF):  add xlab="", ylab="" arguments
 # Modified 1-05-13 (MF):  return coordinates for further annotation
+# Modified 11-5-14 (MF):  now add calculate dimension percentages to axis labels
+
 ################################################################################
 # 
 # plot.mjca: Plotting method for 'mjca'-objects
@@ -257,17 +259,21 @@ plot.mjca <- function(x,
   lim2 <- range(l2) + c(-.05, .05) * diff(range(l2))
 
   # axis labels
-  
-  pct <- 100* (obj$sv^2) / sum(obj$sv^2)
-# Bug:?  these pct values don't match the output from summary()
-  if (xlab == "_auto_")
-#      xlab = paste("Dimension ", dim[1], 
-#			  " (", format(pct[dim[1]], nsmall = 2,  digits = 2), "%)", sep = "") 
-      xlab = paste("Dimension ", dim[1]) 
-  if (ylab == "_auto_")
-#	  ylab = paste("Dimension ", dim[2], 
-#			  " (", format(pct[dim[2]], nsmall = 2,  digits = 2), "%)", sep = "") 
-      ylab = paste("Dimension ", dim[2]) 
+  # calculate the axis percent values trying to match the output from summary()  
+values <- obj$sv^2
+if (obj$lambda == "adjusted") values <- obj$inertia.e
+if (obj$lambda == "JCA") 
+	pct <- rep(NULL, 2)
+else {
+	pct <- 100 * values / sum(values)
+	pct <- paste0(" (", format(pct, nsmall=2, digits=2)[dim], "%)")
+}
+
+# Check:?  do these pct values  match the output from summary()
+if (xlab == "_auto_")
+	xlab = paste0("Dimension ", dim[1], pct[1]) 
+if (ylab == "_auto_")
+	ylab = paste0("Dimension ", dim[2], pct[2]) 
 
   pty.backup <- par()$pty
 
