@@ -23,7 +23,8 @@
   \item{inertia.e  }{Percentages of explained inertia}
   \item{inertia.t  }{Total inertia}
   \item{inertia.et }{Total percentage of explained inertia with the \code{nd}-dimensional solution}
-  \item{levelnames }{Names of the factor/level combinations}
+  \item{levelnames }{Names of the factor/level combinations, joined using \code{ps}}
+  \item{factors    }{A matrix containing the names of the factors and the names of the factor levels}
   \item{levels.n   }{Number of levels in each factor}
   \item{nd         }{User-specified dimensionality of the solution}
   \item{nd.max     }{Maximum possible dimensionality of the solution}

@@ -15,7 +15,7 @@ print.summary.ca <- function(x, ...){
   object <- x
   r.out  <- object$rows
   c.out  <- object$columns
-  if (!is.na(object$scree)[1]){
+  if (!is.null(object$scree)){
     cat("\n")
    # init:
     nchars <- 25
@@ -110,6 +110,8 @@ print.summary.ca <- function(x, ...){
     }
 
  # print row/column summary:
+if (!is.null(object$rows)){
+	
   n1 <- dim(r.out)[1]
   n2 <- dim(r.out)[2]
   r.names <- dimnames(r.out)[[2]]
@@ -125,7 +127,13 @@ print.summary.ca <- function(x, ...){
   r.nn <- c(r.nn, "")
   colnames(r.new) <- r.nn
   rownames(r.new) <- 1:n1
+  cat("\nRows:\n")
+  print(as.matrix(r.new), quote = FALSE, right = TRUE)
+  
+}
 
+if (!is.null(object$columns)){
+	
   n1 <- dim(c.out)[1]
   n2 <- dim(c.out)[2]
   c.names <- dimnames(c.out)[[2]]
@@ -142,11 +150,10 @@ print.summary.ca <- function(x, ...){
   colnames(c.new) <- c.nn
   rownames(c.new) <- 1:n1
 
-  cat("\nRows:\n")
-  print(as.matrix(r.new), quote = FALSE, right = TRUE)
   cat("\nColumns:\n")
   print(as.matrix(c.new), quote = FALSE, right = TRUE)
-  cat("\n")
+}
+#  cat("\n")
 
 
   }

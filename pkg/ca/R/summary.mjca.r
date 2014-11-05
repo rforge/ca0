@@ -12,7 +12,7 @@
 ################################################################################
 
 
-summary.mjca <- function(object, scree = TRUE, rows = FALSE, ...)
+summary.mjca <- function(object, scree = TRUE, rows = FALSE, columns = TRUE, ...)
   {
   obj <- object
   nd  <- obj$nd
@@ -72,7 +72,7 @@ summary.mjca <- function(object, scree = TRUE, rows = FALSE, ...)
     dimnames(r.out) <- list(as.character(1:length(r.names)),
                             c("name", "mass", " qlt", " inr", rcclab))
     } else {
-	r.out <- list(rows = FALSE)
+	r.out <- NULL
 	} # END ROWS
 
  ### COLUMNS:
@@ -142,7 +142,7 @@ summary.mjca <- function(object, scree = TRUE, rows = FALSE, ...)
       scree.out  <- cbind(1:length(obj$sv), round(values, 6), values2, values3)
       }
     } else {
-    scree.out <- NA
+    scree.out <- NULL
     }
 
  ### OUTPUTPUT:

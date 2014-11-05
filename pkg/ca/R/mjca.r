@@ -619,6 +619,18 @@ if (lambda == "adjusted"){
                             byrow = TRUE)
     }
   }
+
+# MF 11-04-14: add dimnames attributes to some components. This is messy because components are
+#  renamed in the output list. Withdrew this, because it doesn't work in all cases, and really
+#  isn't necessary.
+  
+#  dims <- paste0("Dim", seq_along(lambda0)) 
+##  dimnames(rowcoord) <- list(rn.0, dims)
+#  dimnames(colcoord)  <- list(col.names, dims)
+  
+# return a component containing factors and levels that need not be parsed from col.names
+  factors <- cbind(factor=fn, level=ln)
+  
  # wrap up results
   mjca.output <- list(sv         = sqrt(lambda0), 
                       lambda     = lambda,
@@ -626,6 +638,7 @@ if (lambda == "adjusted"){
                       inertia.t  = lambda.t,
                       inertia.et = lambda.et,
                       levelnames = col.names,
+					  factors    = factors,
                       levels.n   = levels.n.0,
                       nd         = nd,
                       nd.max     = nd.max,
