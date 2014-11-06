@@ -256,14 +256,13 @@ plot.ca <- function(x,
 
  # axis labels
 
-	pct <- 100* (obj$sv^2) / sum(obj$sv^2)
+	pct <- round(100* (obj$sv^2) / sum(obj$sv^2), 2)
+	pct <- paste0(" (", pct[dim], "%)")
 	if (xlab == "_auto_")
-		xlab = paste("Dimension ", dim[1], 
-	            " (", format(pct[dim[1]], nsmall = 2,  digits = 2), "%)", sep = "") 
+		xlab = paste0("Dimension ", dim[1], pct[1]) 
 	if (ylab == "_auto_")
-		ylab = paste("Dimension ", dim[2], 
-	            " (", format(pct[dim[2]], nsmall = 2,  digits = 2), "%)", sep = "") 
-
+		ylab = paste0("Dimension ", dim[2], pct[2]) 
+	
   pty.backup <- par()$pty
 
  # plot:

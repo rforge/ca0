@@ -265,8 +265,8 @@ if (obj$lambda == "adjusted") values <- obj$inertia.e
 if (obj$lambda == "JCA") 
 	pct <- rep(NULL, 2)
 else {
-	pct <- 100 * values / sum(values)
-	pct <- paste0(" (", format(pct, nsmall=2, digits=2)[dim], "%)")
+	pct <- round(100 * values / sum(values), 2)
+	pct <- paste0(" (", pct[dim], "%)")
 }
 
 # Check:?  do these pct values  match the output from summary()
