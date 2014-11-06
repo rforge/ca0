@@ -3,7 +3,7 @@ Version 0.56 (2014-11-04)
 o Begin to assign dimnames to matrices from ca() and mjca()--- for now, just the coordinates matrices
 
 o mjca() now returns an additional component, factors, containing factor names and levels, to facilitate plotting
-  and manipulation
+  and manipulation. This can be used to customize the color, symbols, and labels in plots.
 
 o summary.ca() gains rows= and columns= arguments that can be used like scree= to suppress parts of the output.
 

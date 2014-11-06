@@ -143,6 +143,7 @@ print.summary.mjca <- function(x, ...){
 }
 
  ### COLUMNS:
+ if (!is.null(object$rows)){
   c.out   <- object$columns
   n1      <- dim(c.out)[1]
   n2      <- dim(c.out)[2]
@@ -171,6 +172,8 @@ print.summary.mjca <- function(x, ...){
   print(as.matrix(c.new), quote = FALSE, right = TRUE)
   cat("\n")
   }
+
+}
 
 ################################################################################
 

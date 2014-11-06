@@ -76,6 +76,7 @@ summary.mjca <- function(object, scree = TRUE, rows = FALSE, columns = TRUE, ...
 	} # END ROWS
 
  ### COLUMNS:
+ if (columns){
   c.names  <- obj$levelnames    
   sc       <- obj$colsup
   if (!is.na(sc[1])){
@@ -120,7 +121,10 @@ summary.mjca <- function(object, scree = TRUE, rows = FALSE, columns = TRUE, ...
     dimnames(c.out) <- list(as.character(1:length(c.names)),
                             c("name", "mass", " inr", ccclab, "cor", "ctr"))	
 	}
-
+	} else {
+		c.out <- NULL
+	} # END COLUMNS
+	
 
  ### SCREE PLOT:
   sev.0 <- round(100*obj$inertia.et, 1)
