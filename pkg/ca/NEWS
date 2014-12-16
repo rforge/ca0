@@ -9,6 +9,8 @@ o summary.ca() gains rows= and columns= arguments that can be used like scree= t
 
 o summary.mjca() gains a similar columns= argument
 
+o Fixed calls to rgl functions in plot3d.ca.r to avoid 'no global binding' warnings.
+
 Version 0.55 (2014-03-09)
 
 o plot.ca() and plot.mjca() now provide sensible default xlab and ylab
