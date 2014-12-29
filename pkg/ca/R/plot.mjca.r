@@ -1,6 +1,7 @@
 # Modified 1-12-11 (MF):  add xlab="", ylab="" arguments
 # Modified 1-05-13 (MF):  return coordinates for further annotation
 # Modified 11-5-14 (MF):  now add calculate dimension percentages to axis labels
+# Modified 12-29-14 (MF): try to fix dimension percentages for lambda="adjusted"
 
 ################################################################################
 # 
@@ -261,9 +262,14 @@ plot.mjca <- function(x,
   # axis labels
   # calculate the axis percent values trying to match the output from summary()  
 values <- obj$sv^2
-if (obj$lambda == "adjusted") values <- obj$inertia.e
+#if (obj$lambda == "adjusted") 
 if (obj$lambda == "JCA") 
 	pct <- rep(NULL, 2)
+else if (obj$lambda == "adjusted") {
+	values <- obj$inertia.e
+	pct <- round(100 * values, 2)
+	pct <- paste0(" (", pct[dim], "%)")
+}
 else {
 	pct <- round(100 * values / sum(values), 2)
 	pct <- paste0(" (", pct[dim], "%)")
