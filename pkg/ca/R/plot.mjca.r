@@ -1,7 +1,8 @@
 # Modified 1-12-11 (MF):  add xlab="", ylab="" arguments
 # Modified 1-05-13 (MF):  return coordinates for further annotation
 # Modified 11-5-14 (MF):  now add calculate dimension percentages to axis labels
-# Modified 12-29-14 (MF): try to fix dimension percentages for lambda="adjusted"
+# Modified 12-29-14 (MF): fix dimension percentages for lambda="adjusted"
+#                         For labels=(1,1), don't offset the labels from the points
 
 ################################################################################
 # 
@@ -304,10 +305,11 @@ if (ylab == "_auto_")
         }
     }
   if (labels[1] > 0) {
-    xoff1 <- .5 * strwidth(x.names, cex = .75) + .5 * strwidth("o", cex = .75)
-    xoff2 <- .5 * strheight(x.names, cex = .75) + .5 * strheight("o", cex = .75)
-    text(x[,1] + xoff1, x[,2] + xoff2, x.names, cex = 0.75, xpd = TRUE)
-    }
+	xoff1 <- if(labels[1]>1) .5 * strwidth(x.names, cex = .75) + .5 * strwidth("o", cex = .75) else 0
+	xoff2 <- if(labels[1]>1) .5 * strheight(x.names, cex = .75) + .5 * strheight("o", cex = .75) else 0
+	text(x[,1] + xoff1, x[,2] + xoff2, x.names, cex = 0.75, xpd = TRUE)
+#	text(x[,1] + xoff1, x[,2] + xoff2, x.names, cex = 0.75, xpd = TRUE, col=col.lab[1])
+}
 
  # columns
   if (!is.na(y[1]) & labels[2] != 1 ) {
@@ -319,10 +321,9 @@ if (ylab == "_auto_")
         }
     }
   if (labels[2] > 0) {
-    yoff1 <- .5 * strwidth(y.names, cex = 0.75) + .5 * strwidth("o", cex = .75)
-    yoff2 <- .5 * strheight(y.names, cex = 0.75) + .5 * 
-               strheight("o", cex = .75)
-    text(y[,1] + yoff1, y[,2] + yoff2, y.names, cex = 0.75, xpd = TRUE)
+	  yoff1 <- if(labels[2]>1) .5 * strwidth(y.names, cex = 0.75) + .5 * strwidth("o", cex = .75) else 0
+	  yoff2 <- if(labels[2]>1) .5 * strheight(y.names, cex = 0.75) + .5 * strheight("o", cex = .75) else 0
+	  text(y[,1] + yoff1, y[,2] + yoff2, y.names, cex = 0.75, xpd = TRUE)
     }
 
   par(pty = pty.backup)

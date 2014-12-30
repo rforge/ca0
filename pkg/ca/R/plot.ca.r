@@ -4,6 +4,9 @@
 #    return an invisible result for further plot annotation
 #    Provide default xlab, ylab ="_auto_" to mean auto generate descriptive label
 #    added col.lab argument to provide for colors of text labels
+# Modified 12/30/14 (MF):
+#    Use only 1 decimal in axis labels for pct inertia
+#    For labels=(1,1), don't offset the labels from the points
 
 ################################################################################
 # 
@@ -284,8 +287,8 @@ plot.ca <- function(x,
         }
     }
   if (labels[1] > 0) {
-    xoff1 <- .5 * strwidth(x.names, cex = .75) + .5 * strwidth("o", cex = .75)
-    xoff2 <- .5 * strheight(x.names, cex = .75) + .5 * strheight("o", cex = .75)
+    xoff1 <- if(labels[1]>1) .5 * strwidth(x.names, cex = .75) + .5 * strwidth("o", cex = .75) else 0
+    xoff2 <- if(labels[1]>1) .5 * strheight(x.names, cex = .75) + .5 * strheight("o", cex = .75) else 0
 	text(x[,1] + xoff1, x[,2] + xoff2, x.names, cex = 0.75, xpd = TRUE, col=col.lab[1])
 }
 
@@ -299,9 +302,8 @@ plot.ca <- function(x,
         }
     }
   if (labels[2] > 0) {
-    yoff1 <- .5 * strwidth(y.names, cex = 0.75) + .5 * strwidth("o", cex = .75)
-    yoff2 <- .5 * strheight(y.names, cex = 0.75) + .5 * 
-             strheight("o", cex = .75)
+    yoff1 <- if(labels[2]>1) .5 * strwidth(y.names, cex = 0.75) + .5 * strwidth("o", cex = .75) else 0
+    yoff2 <- if(labels[2]>1) .5 * strheight(y.names, cex = 0.75) + .5 * strheight("o", cex = .75) else 0
 	text(y[,1] + yoff1, y[,2] + yoff2, y.names, cex = 0.75, xpd = TRUE, col=col.lab[2])
 }
 

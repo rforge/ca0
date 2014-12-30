@@ -143,7 +143,7 @@ print.summary.mjca <- function(x, ...){
 }
 
  ### COLUMNS:
- if (!is.null(object$rows)){
+ if (!is.null(object$columns)){
   c.out   <- object$columns
   n1      <- dim(c.out)[1]
   n2      <- dim(c.out)[2]
