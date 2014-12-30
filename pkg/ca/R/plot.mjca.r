@@ -267,11 +267,11 @@ if (obj$lambda == "JCA")
 	pct <- rep(NULL, 2)
 else if (obj$lambda == "adjusted") {
 	values <- obj$inertia.e
-	pct <- round(100 * values, 2)
+	pct <- round(100 * values, 1)
 	pct <- paste0(" (", pct[dim], "%)")
 }
 else {
-	pct <- round(100 * values / sum(values), 2)
+	pct <- round(100 * values / sum(values), 1)
 	pct <- paste0(" (", pct[dim], "%)")
 }
 

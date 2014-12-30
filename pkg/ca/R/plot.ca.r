@@ -256,7 +256,7 @@ plot.ca <- function(x,
 
  # axis labels
 
-	pct <- round(100* (obj$sv^2) / sum(obj$sv^2), 2)
+	pct <- round(100* (obj$sv^2) / sum(obj$sv^2), 1)
 	pct <- paste0(" (", pct[dim], "%)")
 	if (xlab == "_auto_")
 		xlab = paste0("Dimension ", dim[1], pct[1]) 
