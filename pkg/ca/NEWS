@@ -1,3 +1,9 @@
+Version 0.58 (2014-12-31)
+o mjca(): Added option 'reti' (logical, if TRUE returns the indicator matrix as $indmat). 
+o mjca(): Fixed potentially negative eigenvalues (numerical issue; negative ev's are set to zero).
+o mjca(): Burt matrices ($Burt) now with row- and columnnames.
+o print.summary.ca(): Fixed scree plot.
+
 Version 0.57 (2014-12-30)
 
 o Fixed bug in print.summary.mcja re columns

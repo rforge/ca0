@@ -23,7 +23,8 @@ print.summary.mjca <- function(x, ...){
     CUMEV  <- crev[Dim]
     sev <- object$sev
     if (length(rev)>1) {
-      st <- round(nchars * (rev - min(rev)) / diff(range(rev)), 0)
+  #    st <- round(nchars * (rev - min(rev)) / diff(range(rev)), 0)
+      st <- round(nchars * rev/sum(rev), 0)
       } else {
       st <- nchars
       }

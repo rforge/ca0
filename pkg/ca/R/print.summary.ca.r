@@ -27,7 +27,8 @@ print.summary.ca <- function(x, ...){
     EV     <- rev[Dim]
     CUMEV  <- crev[Dim]
     if (length(rev)>1) {
-      st <- round(nchars * (rev - min(rev)) / diff(range(rev)), 0)
+  #    st <- round(nchars * (rev - min(rev)) / diff(range(rev)), 0)
+      st <- round(nchars * rev/sum(rev), 0)
       } else {
       st <- nchars
       }
