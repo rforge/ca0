@@ -1,3 +1,5 @@
+Version 0.59 (2015-01-29)
+
 Version 0.58 (2014-12-31)
 o mjca(): Added option 'reti' (logical, if TRUE returns the indicator matrix as $indmat). 
 o mjca(): Fixed potentially negative eigenvalues (numerical issue; negative ev's are set to zero).

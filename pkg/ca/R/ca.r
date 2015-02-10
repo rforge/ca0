@@ -1,5 +1,6 @@
 # MF: ca() has been made an S3 generic function, accepting a variety of input objects
 # MF: assign dimnames to matrices in the output
+# MF: include N in output list for chisq decomposition
 
 ################################################################################
 # 
@@ -314,6 +315,7 @@ list(sv         = sv,
      colinertia = cin, 
      colcoord   = gam, 
      colsup     = supcol,
+	 N          = N,
      call       = match.call())
 class(ca.output) <- "ca"
 return(ca.output)  

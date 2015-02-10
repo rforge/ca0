@@ -58,6 +58,7 @@ ca(obj, ...)
   \item{colinertia}{Column inertias}
   \item{colcoord  }{Column standard coordinates}
   \item{colsup    }{Indices of column supplementary points}
+  \item{N         }{The frequency table}
       }
 \references{Nenadic, O. and Greenacre, M. (2007). Correspondence analysis in R, with two- and three-dimensional graphics: The ca package. \emph{Journal of Statistical Software}, \bold{20 (3)}, \url{http://www.jstatsoft.org/v20/i03/}\cr
             Greenacre, M. (2007). \emph{Correspondence Analysis in Practice}. Second Edition. London: Chapman & Hall / CRC.\cr
