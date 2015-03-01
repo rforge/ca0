@@ -3,6 +3,7 @@
 # Modified 11-5-14 (MF):  now add calculate dimension percentages to axis labels
 # Modified 12-29-14 (MF): fix dimension percentages for lambda="adjusted"
 #                         For labels=(1,1), don't offset the labels from the points
+# 03-01-15 (ON): temporarily enabled plotting rows (works only for inidcator!) 
 
 ################################################################################
 # 
@@ -55,7 +56,7 @@ plot.mjca <- function(x,
  obj <- x
 
  # temporary fix for the rows:
-  if (what[1] != "none") what[1] <- "none"
+ # if (what[1] != "none") what[1] <- "none"
 
  # recycling input:
  if (length(what)    != 2) what    <- rep(what, length = 2)
