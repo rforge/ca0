@@ -39,7 +39,8 @@ plot3d.ca <- function(x,
                       labels  = c(2,2), 
                       sf      = 0.00002,
                       arrows  = c(FALSE, FALSE),  ...){
-  require(rgl)
+  #require(rgl)
+  requireNamespace("rgl")
   ########## RGLPLOT0: temporal solution for using 'pch' within RGL ##########
   rglplot0 <- function(x = 0, y = 0, z = 0, v = 1, pch = 1, segments = 16, 
                        size = 1, ...) {
