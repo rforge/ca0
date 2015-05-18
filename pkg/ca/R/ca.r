@@ -295,8 +295,9 @@ ca.matrix <- function(obj,
  #   }
 
 # MF 11-04-14: add dimnames attributes to some components??
-#  
-dims <- paste0("Dim", seq_along(sv)) 
+# 
+# ON 18-05-2015: small fix [1:nd] 
+dims <- paste0("Dim", seq_along(sv))[1:nd] 
 dimnames(phi) <- list(rn, dims)
 dimnames(gam) <- list(cn, dims)
 

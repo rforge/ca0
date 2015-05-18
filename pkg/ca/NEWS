@@ -1,3 +1,6 @@
+Version 0.61 (2015-05-18)
+o Fixed problem with nd='fixed value' in ca
+
 Version 0.60 (2015-03-01)
 o Temporarily enabled plotting rows in plot.mjca 
 o Use requireNamespace("rgl") in plot3d.ca.r to avoid NOTE in R CMD check
