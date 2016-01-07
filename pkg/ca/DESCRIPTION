@@ -1,6 +1,6 @@
 Package: ca
-Version: 0.61
-Date: 2015-05-18
+Version: 0.64
+Date: 2016-01-04
 Title: Simple, Multiple and Joint Correspondence Analysis
 Authors@R: c(person(given = "Michael", family = "Greenacre", role = "aut", email = "michael.greenacre@upf.edu"),
              person(given = "Oleg", family = "Nenadic", role = c("aut", "cre"), email = "onenadi@uni-goettingen.de"),
@@ -9,7 +9,7 @@ Author: Michael Greenacre [aut], Oleg Nenadic [aut, cre], Michael Friendly [ctb]
 Maintainer: Oleg Nenadic <onenadi@uni-goettingen.de>
 Depends: R (>= 2.8.0)
 Suggests: rgl (>= 0.64-10)
-Description: A package for computation and visualization of simple, multiple and joint correspondence analysis.
+Description: Computation and visualization of simple, multiple and joint correspondence analysis.
 LazyLoad: yes
 LazyData: yes
 License: GPL
