@@ -28,7 +28,7 @@ mjca(obj, ...)
                    or an integer array.}
   \item{nd       }{Number of dimensions to be included in the output; if NA the maximum possible dimensions are included.}
   \item{lambda   }{Gives the scaling method. Possible values include \kbd{"indicator"}, \kbd{"Burt"}, \kbd{"adjusted"} and \kbd{"JCA"}.
-                Using \kbd{lambda = "JCA"} results in a joint correspondence analysis using iterative adjusment of the Burt matrix in the solution space.}
+                Using \kbd{lambda = "JCA"} results in a joint correspondence analysis using iterative adjusment of the Burt matrix in the solution space. See Details for descriptions of these options.}
   \item{supcol   }{Indices of supplementary columns.}
   \item{subsetcol}{Indices of subset categories.}
   \item{ps       }{Separator used for combining variable and category names.}
@@ -39,7 +39,16 @@ mjca(obj, ...)
 }
 
 \details{
-The function \code{mjca} computes a multiple or joint correspondence analysis based on the eigenvalue decomposition of the Burt matrix.
+The function \code{mjca} computes a multiple or joint correspondence analysis based on the eigenvalue decomposition of the Burt matrix. The \code{lambda} option selects the scaling variant desired for
+reporting inertias.
+
+\itemize{
+  \item \code{lambda="indicator"} gives multiple correspondence analysis based on the correspondence analysis of the indicator matrix, with corresponding inertias (eigenvalues).  
+  \item \code{lambda="Burt"} gives the version of multiple correspondence analysis based on the correspondence analysis of the Burt matrix, the inertias of which are the squares of those for the indicator option.  
+  \item \code{lambda="adjusted"} is the default option, giving improved percentages of inertia based on fitting the off-diagonal submatrices of the Burt matrix by rescaling the multiple correspondence analysis solution.  All these first three options give the same standard coordinates of the categories. 
+  \item \code{lambda="JCA"} gives a joint correspondence analysis, which uses an iterative algorithm that optimally fits the off-diagonal submatrices of the Burt matrix.  The JCA solution does not have strictly nested  dimensions, so the percentage of inertia explained is given for the whole solution of chosen dimensionality, not for each dimension, but this percentage is optimal.
+}
+
 }
 
 \value{

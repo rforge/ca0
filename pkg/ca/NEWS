@@ -3,6 +3,7 @@ o Fixed problem with nd='fixed value' in ca
 o mjca() has been made an S3 generic, with data.frame, table, and array methods
 o added .arrows() to draw nicer arrows with arrows=TRUE in plot.ca() and plot.mjca()
 o plot.ca() gains a lwd= argument for arrows and lines
+o Updated mjca.Rd with details of lambda= argument [Thx: MG]
 
 Version 0.60 (2015-03-01)
 o Temporarily enabled plotting rows in plot.mjca 
