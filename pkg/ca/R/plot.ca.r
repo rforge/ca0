@@ -241,7 +241,7 @@ plot.ca <- function(x,
  # rows
   if (!is.na(x[1]) & labels[1] != 1) {
     if (arrows[1]) {
-      arrows(rep(0, length(x[,1])), rep(0, length(x[,1])), x[,1], x[,2], col = col.x, length = 0.1) 
+      .arrows(rep(0, length(x[,1])), rep(0, length(x[,1])), x[,1], x[,2], col = col.x, length = 0.1) 
       } else {
       points(x[,1], x[,2], cex = cex.x, col = col.x, pch = x.pch)
       }
@@ -254,7 +254,7 @@ plot.ca <- function(x,
  # columns
   if (!is.na(y[1]) & labels[2] != 1 ) {
     if (arrows[2]) {
-      arrows(rep(0, length(y[,1])), rep(0, length(y[,1])), y[,1], y[,2], col = col.y, length = 0.1) 
+      .arrows(rep(0, length(y[,1])), rep(0, length(y[,1])), y[,1], y[,2], col = col.y, length = 0.1) 
       } else {
       points(y[,1], y[,2], cex = cex.y, col = col.y, pch = y.pch)
       }
@@ -275,3 +275,12 @@ plot.ca <- function(x,
   invisible(result)
   }
 ################################################################################
+
+# the following function isn't exported
+# Provides a simple way to make more attractive arrows
+
+.arrows <- function(..., angle=15){
+  angles <- seq(1, angle, by=2)
+  for (ang in angles) arrows(..., angle=ang)
+}
+

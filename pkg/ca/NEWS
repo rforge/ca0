@@ -1,6 +1,7 @@
 Version 0.61 (2015-05-18)
 o Fixed problem with nd='fixed value' in ca
 o mjca() has been made an S3 generic, with data.frame, table, and array methods
+o added .arrows() to draw nicer arrows with arrows=TRUE in plot.ca() and plot.mjca()
 
 Version 0.60 (2015-03-01)
 o Temporarily enabled plotting rows in plot.mjca 
