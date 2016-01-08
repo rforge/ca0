@@ -12,6 +12,7 @@ plot.ca <- function(x,
                     labels  = c(2,2), 
                     arrows  = c(FALSE, FALSE), 
                     lines   = c(FALSE, FALSE),
+                    lwd     = 1,
                     xlab    = "_auto_",
                     ylab    = "_auto_",
                     col.lab = c("blue", "red"),
@@ -136,6 +137,7 @@ plot.ca <- function(x,
   y.names <- nameslut[[pri[pr==what[2]]]][[2]]
   x.pch   <- pchlut[[pri[pr==what[1]]]][[1]]
   y.pch   <- pchlut[[pri[pr==what[2]]]][[2]]
+  
  # dimensions to plot
   if(is.matrix(x)){
     x <- x[,dim]
@@ -146,6 +148,7 @@ plot.ca <- function(x,
     y <- y[,dim]
     } else {
     y <- matrix(y[dim], ncol = length(dim), nrow = 1) }
+
  ## plot setup
  # radius/mass
   if (mass[1]){
@@ -212,6 +215,7 @@ plot.ca <- function(x,
     ytemp <- nc0 * cind
     col.y <- collut.y[ytemp]
     }
+
 ## plotting:
  # determine margins
   q1 <- (1:dim(x)[1])
@@ -241,7 +245,7 @@ plot.ca <- function(x,
  # rows
   if (!is.na(x[1]) & labels[1] != 1) {
     if (arrows[1]) {
-      .arrows(rep(0, length(x[,1])), rep(0, length(x[,1])), x[,1], x[,2], col = col.x, length = 0.1) 
+      .arrows(rep(0, length(x[,1])), rep(0, length(x[,1])), x[,1], x[,2], col = col.x, lwd=lwd, length = 0.1) 
       } else {
       points(x[,1], x[,2], cex = cex.x, col = col.x, pch = x.pch)
       }
@@ -254,7 +258,7 @@ plot.ca <- function(x,
  # columns
   if (!is.na(y[1]) & labels[2] != 1 ) {
     if (arrows[2]) {
-      .arrows(rep(0, length(y[,1])), rep(0, length(y[,1])), y[,1], y[,2], col = col.y, length = 0.1) 
+      .arrows(rep(0, length(y[,1])), rep(0, length(y[,1])), y[,1], y[,2], col = col.y, lwd=lwd, length = 0.1) 
       } else {
       points(y[,1], y[,2], cex = cex.y, col = col.y, pch = y.pch)
       }
@@ -265,9 +269,10 @@ plot.ca <- function(x,
     text(y[,1] + yoff1, y[,2] + yoff2, y.names, cex = 0.75, xpd = TRUE, col = col.lab[2])
     }
  # plot connecting lines (sorted by X value)
-  if (lines[1]) lines(x[order(x[,1]),], col = col.x)
-  if (lines[2]) lines(y[order(y[,1]),], col = col.y)
+  if (lines[1]) lines(x[order(x[,1]),], col = col.x, lwd=lwd)
+  if (lines[2]) lines(y[order(y[,1]),], col = col.y, lwd=lwd)
   par(pty = pty.backup)
+
  # return a result for further plot annotation
   rownames(x) <- x.names; colnames(x) <- paste0("Dim", dim)
   rownames(y) <- y.names; colnames(y) <- paste0("Dim", dim)
