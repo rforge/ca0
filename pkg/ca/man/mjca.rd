@@ -1,12 +1,31 @@
 \name{mjca}
 \alias{mjca}
+\alias{mjca.data.frame}
+\alias{mjca.table}
+\alias{mjca.array}
+\alias{mjca.default}
+
 \title{Multiple and joint correspondence analysis}
 \description{Computation of multiple and joint correspondence analysis.}
-\usage{mjca(obj, nd = 2, lambda = c("adjusted", "indicator", "Burt", "JCA"), 
+
+
+\usage{
+
+mjca(obj, ...)
+
+\method{mjca}{data.frame}(obj, ...)
+\method{mjca}{table}(obj, ...)
+\method{mjca}{array}(obj, ...)
+
+\method{mjca}{default}(obj, nd = 2, lambda = c("adjusted", "indicator", "Burt", "JCA"), 
      supcol = NA, subsetcol = NA, 
-     ps = ":", maxit = 50, epsilon = 0.0001, reti = FALSE)}
+     ps = ":", maxit = 50, epsilon = 0.0001, reti = FALSE, ...)
+
+}
+
 \arguments{
-  \item{obj      }{A response pattern matrix (data frame containing factors), or a frequency table (a table object)}
+  \item{obj      }{A response pattern matrix (data frame containing factors), or a frequency table (a \dQuote{table} object)
+                   or an integer array.}
   \item{nd       }{Number of dimensions to be included in the output; if NA the maximum possible dimensions are included.}
   \item{lambda   }{Gives the scaling method. Possible values include \kbd{"indicator"}, \kbd{"Burt"}, \kbd{"adjusted"} and \kbd{"JCA"}.
                 Using \kbd{lambda = "JCA"} results in a joint correspondence analysis using iterative adjusment of the Burt matrix in the solution space.}
@@ -16,8 +35,13 @@
   \item{maxit    }{The maximum number of iterations (Joint Correspondence Analysis).}
   \item{epsilon  }{A convergence criterion (Joint Correspondence Analysis).}
   \item{reti     }{Logical indicating whether the indicator matrix should be included in the output.}
-          }
-\details{The function \code{mjca} computes a multiple or joint correspondence analysis based on the eigenvalue decomposition of the Burt matrix.}
+  \item{...      }{Arguments passed to \code{mjca.default}}
+}
+
+\details{
+The function \code{mjca} computes a multiple or joint correspondence analysis based on the eigenvalue decomposition of the Burt matrix.
+}
+
 \value{
   \item{sv         }{Eigenvalues (\kbd{lambda = "indicator"}) or singular values (\kbd{lambda = "Burt"}, \kbd{"adjusted"} or \kbd{"JCA"}) }
   \item{lambda     }{Scaling method}
@@ -58,7 +82,9 @@
 \references{Nenadic, O. and Greenacre, M. (2007), Correspondence analysis in R, with two- and three-dimensional graphics: The ca package. \emph{Journal of Statistical Software}, \bold{20 (3)}, \url{http://www.jstatsoft.org/v20/i03/}\cr
             Nenadic, O. and Greenacre, M. (2007), Computation of Multiple Correspondence Analysis, with Code in R, in \emph{Multiple Correspondence Analysis and Related Methods} (eds. M. Greenacre and J. Blasius), Boca Raton: Chapmann & Hall / CRC, pp. 523-551.\cr
             Greenacre, M.J. and Pardo, R. (2006), Subset correspondence analysis: visualizing relationships among a selected set of response categories from a questionnaire survey. \emph{Sociological Methods and Research}, \bold{35}, pp. 193-218.}
+
 \seealso{\code{\link{eigen}}, \code{\link{plot.mjca}}, \code{\link{summary.mjca}}, \code{\link{print.mjca}} }
+
 \examples{ 
 data("wg93")
 mjca(wg93[,1:4])

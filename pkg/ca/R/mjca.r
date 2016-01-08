@@ -1,7 +1,47 @@
 ################################################################################
 # mjca(): Computation of MCA & JCA (ca package 0.70)
 ################################################################################
-mjca <- function(obj, 
+# generic ca()
+mjca <- function(obj, ...){
+  UseMethod("mjca")
+}
+
+mjca.table <- function(obj, ...){
+  obj <- expand.dft(obj)
+  mjca.default(obj, ...)
+}
+
+mjca.array <- function(obj, ...){
+  if (!all(floor(obj) == obj, na.rm = TRUE)) stop("Input object must contain integers")
+  obj <- expand.dft(as.table(obj))
+  mjca.default(obj, ...)
+}
+
+mjca.data.frame <- function(obj, ...){
+  mjca.default(obj, ...)
+}
+
+
+# mjca.xtabs() : not necessary, because xtabs() inherits class "table"
+# mjca.xtabs <- function(obj, ...){
+#   if ((m <- length(dim(obj))) < 2L){
+#     stop(gettextf("Frequency table is %d-dimensional", m), domain = NA)
+#   }
+#   mjca.default(obj, ...)
+# }
+
+# mjca.formula() : not necessary, because can use mjca(xtabs(), ...)
+# mjca.formula <- function (formula, data = parent.frame(), ...){
+#   rhs <- formula[[length(formula)]]
+# #   if (length(rhs[[2L]]) > 1L || length(rhs[[3L]]) > 1L){
+# #     stop("Higher-way table requested. Only 2-way allowed")
+# #   }
+#   tab <- table(eval(rhs[[2L]], data), eval(rhs[[3L]], data))
+#   names(dimnames(tab)) <- as.character(c(rhs[[2L]], rhs[[3L]]))
+#   mjca.table(tab, ...)
+# }
+
+mjca.default <- function(obj, 
                  nd = 2, 
                  lambda = c("adjusted", "indicator", "Burt", "JCA"), 
                  supcol = NA, 
@@ -9,17 +49,20 @@ mjca <- function(obj,
                  ps = ":", 
                  maxit = 50, 
                  epsilon = 0.0001, 
-                 reti = FALSE){
+                 reti = FALSE,
+                 ...){
 ##### Part 1: Input checks:
  ### Check for valid argument in 'lambda'
   lambda <- match.arg(lambda)
  ### check input data
  # allow for table input
-  if (is.table(obj)) {
-    obj <- expand.dft(obj)
-    }
-  obj <- data.frame(lapply(data.frame(obj), factor)) 
+#   if (is.table(obj)) {
+#     obj <- expand.dft(obj)
+#     }
+
+    obj <- data.frame(lapply(data.frame(obj), factor)) 
  ### End check input data
+
 ##### Part 2: Data preparation
  # Indicator and Burt matrix:
   levels.n.0  <- unlist(lapply(obj, nlevels))

@@ -14,3 +14,8 @@ S3method(ca, data.frame)
 S3method(ca, formula)
 S3method(ca, table)
 S3method(ca, xtabs)
+
+S3method(mjca, table)
+S3method(mjca, array)
+S3method(mjca, data.frame)
+
