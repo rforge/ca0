@@ -1,4 +1,4 @@
-export(ca, iterate.mjca, mjca, pchlist, plot3d.ca)
+export(ca, iterate.mjca, mjca, pchlist, plot3d.ca, plot.ca, plot.mjca, multilines)
 
 S3method(plot, ca)
 S3method(plot, mjca)

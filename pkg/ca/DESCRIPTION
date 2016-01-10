@@ -8,7 +8,7 @@ Authors@R: c(person(given = "Michael", family = "Greenacre", role = "aut", email
 Author: Michael Greenacre [aut], Oleg Nenadic [aut, cre], Michael Friendly [ctb]
 Maintainer: Oleg Nenadic <onenadi@uni-goettingen.de>
 Depends: R (>= 2.8.0)
-Suggests: rgl (>= 0.64-10)
+Suggests: rgl (>= 0.64-10), vcd
 Description: Computation and visualization of simple, multiple and joint correspondence analysis.
 LazyLoad: yes
 LazyData: yes
