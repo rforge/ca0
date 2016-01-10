@@ -10,7 +10,8 @@ plot.mjca <- function(x,
                       contrib   = c("none", "none"), 
                       col       = c("#000000", "#FF0000"), 
                       pch       = c(16, 1, 17, 24), 
-                      labels    = c(2, 2), 
+                      labels    = c(2, 2),
+                      collabels = c("both", "level", "factor"),
                       arrows    = c(FALSE, FALSE), 
                       xlab      = "_auto_",
                       ylab      = "_auto_",
@@ -72,7 +73,15 @@ plot.mjca <- function(x,
   x <- mtlut[[mti[mt==map]]][[1]]
   y <- mtlut[[mti[mt==map]]][[2]]
   x.names <- obj$rownames
-  y.names <- obj$levelnames
+  
+  collabels <- match.arg(collabels)
+  y.names <- switch(collabels,
+                    both = obj$levelnames,
+                    level = obj$factors[,"level"],
+                    factor = obj$factors[,"factor"]
+                    )
+  # y.names <- obj$levelnames
+
  # profiles to plot
   indx   <- dim(x)[1]
   indy   <- dim(y)[1]
