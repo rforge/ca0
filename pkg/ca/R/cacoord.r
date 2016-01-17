@@ -24,6 +24,8 @@ cacoord <- function(obj,
              rows = NA,
              cols = NA,
              ...){
+
+  if (!inherits(obj, c("ca", "mjca"))) stop("'obj' must be a 'ca' or 'mjca' object")
   map <- match.arg(type)
   if (is.na(rows) & is.na(cols)){
     rows <- TRUE
