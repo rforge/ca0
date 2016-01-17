@@ -1,4 +1,8 @@
-export(ca, iterate.mjca, mjca, pchlist, plot3d.ca, plot.ca, plot.mjca, multilines)
+import(stats)
+import(graphics)
+importFrom("grDevices", "col2rgb", "palette", "rgb")
+importFrom("utils", "type.convert")
+export(ca, iterate.mjca, mjca, pchlist, plot3d.ca, plot.ca, plot.mjca, cacoord, caconv, multilines)
 
 S3method(plot, ca)
 S3method(plot, mjca)

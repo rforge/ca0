@@ -1,67 +1,40 @@
 ################################################################################
 # mjca(): Computation of MCA & JCA (ca package 0.70)
 ################################################################################
-# generic ca()
+# generic mjca()
 mjca <- function(obj, ...){
   UseMethod("mjca")
-}
+  }
 
 mjca.table <- function(obj, ...){
   obj <- expand.dft(obj)
   mjca.default(obj, ...)
-}
+  }
 
 mjca.array <- function(obj, ...){
   if (!all(floor(obj) == obj, na.rm = TRUE)) stop("Input object must contain integers")
   obj <- expand.dft(as.table(obj))
   mjca.default(obj, ...)
-}
+  }
 
 mjca.data.frame <- function(obj, ...){
   mjca.default(obj, ...)
-}
+  }
 
-
-# mjca.xtabs() : not necessary, because xtabs() inherits class "table"
-# mjca.xtabs <- function(obj, ...){
-#   if ((m <- length(dim(obj))) < 2L){
-#     stop(gettextf("Frequency table is %d-dimensional", m), domain = NA)
-#   }
-#   mjca.default(obj, ...)
-# }
-
-# mjca.formula() : not necessary, because can use mjca(xtabs(), ...)
-# mjca.formula <- function (formula, data = parent.frame(), ...){
-#   rhs <- formula[[length(formula)]]
-# #   if (length(rhs[[2L]]) > 1L || length(rhs[[3L]]) > 1L){
-# #     stop("Higher-way table requested. Only 2-way allowed")
-# #   }
-#   tab <- table(eval(rhs[[2L]], data), eval(rhs[[3L]], data))
-#   names(dimnames(tab)) <- as.character(c(rhs[[2L]], rhs[[3L]]))
-#   mjca.table(tab, ...)
-# }
 
 mjca.default <- function(obj, 
-                 nd = 2, 
-                 lambda = c("adjusted", "indicator", "Burt", "JCA"), 
-                 supcol = NA, 
+                 nd        = 2, 
+                 lambda    = c("adjusted", "indicator", "Burt", "JCA"), 
+                 supcol    = NA, 
                  subsetcol = NA, 
-                 ps = ":", 
-                 maxit = 50, 
-                 epsilon = 0.0001, 
-                 reti = FALSE,
+                 ps        = ":", 
+                 maxit     = 50, 
+                 epsilon   = 0.0001, 
+                 reti      = FALSE,
                  ...){
 ##### Part 1: Input checks:
- ### Check for valid argument in 'lambda'
   lambda <- match.arg(lambda)
- ### check input data
- # allow for table input
-#   if (is.table(obj)) {
-#     obj <- expand.dft(obj)
-#     }
-
-    obj <- data.frame(lapply(data.frame(obj), factor)) 
- ### End check input data
+  obj    <- data.frame(lapply(data.frame(obj), factor)) 
 
 ##### Part 2: Data preparation
  # Indicator and Burt matrix:
@@ -92,8 +65,8 @@ mjca.default <- function(obj,
       if (sum(subsetcol < 0) == length(subsetcol)){ # check for negative indexes
         subsetcol <- (1:sum(levels.n))[subsetcol]
         }
-      lut  <- cumsum(levels.n.0) - unlist(levels.n.0)
-      s0   <- (1:sum(levels.n.0))[subsetcol]
+      lut <- cumsum(levels.n.0) - unlist(levels.n.0)
+      s0  <- (1:sum(levels.n.0))[subsetcol]
       } # end subset-vector
 
     if (mode(subsetcol) == "list"){
@@ -150,7 +123,11 @@ mjca.default <- function(obj,
     levels.n.sub        <- table(rep(1:Q, levels.n)[subsetcol])
    # names(levels.n.sub) <- names(levels.n)
     foo <- rep(names(levels.n), levels.n)[subsetcol]
-	names(levels.n.sub) <- foo[!duplicated(foo)]
+    if (is.na(supcol)[1]){
+      names(levels.n.sub) <- foo[!duplicated(foo)]
+      } else {
+      names(levels.n.sub) <- (foo[!duplicated(foo)])[-supcol]
+      }
     Q.sub               <- Q - sum(levels.n.sub == 0)
     levels.n.sub        <- levels.n.sub[levels.n.sub != 0]
     }
@@ -176,16 +153,16 @@ mjca.default <- function(obj,
   evd.S      <- eigen(S)
   evd.S$values[evd.S$values < 0] <- 0
   obj.num    <- as.matrix(data.frame(lapply(obj[,Qind], as.numeric)))
-  rowmass    <- NA # rep(1/I.0, I.0)
-  rowinertia <- NA # apply(S^2, 1, sum)
-  rowdist    <- NA # sqrt(rowinertia / rm)
+  rowmass    <- rep(1/I.0, I.0) #NA # rep(1/I.0, I.0)
+#  rowinertia <- apply(((Z.0/sum(Z.0)) - rm %*% t(cm))^2, 1, sum) #NA # apply(S^2, 1, sum)
+  rowinertia <- apply(((Z/sum(Z)) - rm %*% t(cm))^2, 1, sum) #NA # apply(S^2, 1, sum)
+  rowdist    <- sqrt(rowinertia / rm) #NA # sqrt(rowinertia / rm)
   colinertia <- apply(S^2, 2, sum)
   coldist    <- sqrt(colinertia / cm)
  # Burt bits for supplementary variables:
   if (!is.na(ind.sup[1])){
     B.sup <- B.0[ind.sup, ind]
     }
- ### FIX THIS BELOW (2011-09):
   if(!is.na(subsetcol[1])){
     if(!is.na(ind.sup[1])){
       ind.sub     <- c(ind.sup,ind.sub)
@@ -193,7 +170,8 @@ mjca.default <- function(obj,
       subsetcol   <- ind.sub
       ind.sup.foo <- ind.sup - (length(ind.0)-length(c(ind.sub,ind.sup)))
       }
-    B.sub <- B[ind.sub,ind.sub]
+ #   B.sub <- B[ind.sub,ind.sub]
+    B.sub <- B.0[ind.sub,ind.sub]
     }
  # some placeholders for adjusted/JCA
   B.star       <- NA
@@ -209,12 +187,23 @@ mjca.default <- function(obj,
     col.sc  <- diag(1 / sqrt(cm)) %*% evd.S$vectors[,1:(J-Q)] 
     col.pc  <- col.sc %*% diag(sqrt(evd.S$values[1:(J-Q)]))
    # Computations for rows:
-    indices <- t(t(obj.num) + offset[Qind])
-    row.pc  <- matrix(0, nrow = nrow(obj.num), ncol = J-Q)
-    for(i in 1:nrow(obj.num)){
-      row.pc[i,] <- apply(col.sc[indices[i,],], 2, sum) / Q
+	if (!is.na(supcol)[1]){
+	  offset.shift <- rep(0, length(Qind))
+	  for (i in 1:length(Qind.sup)){
+	    offset.shift[offset[Qind] > offset[Qind.sup[i]]] <- -offset[Qind.sup[i]]
+	    }
+      indices <- t(t(obj.num) + offset[Qind] + offset.shift)
+      row.pc  <- matrix(0, nrow = nrow(obj.num), ncol = J-Q)
+      for(i in 1:nrow(obj.num)){
+        row.pc[i,] <- apply(col.sc[indices[i,],], 2, sum) / Q
+        }
+	  } else {
+      indices <- t(t(obj.num) + offset[Qind])
+      row.pc  <- matrix(0, nrow = nrow(obj.num), ncol = J-Q)
+      for(i in 1:nrow(obj.num)){
+        row.pc[i,] <- apply(col.sc[indices[i,],], 2, sum) / Q
+        }
       }
-   # (maybe you can figure out a way to do this without a loop!)
     row.sc    <- row.pc %*% diag(1/sqrt(evd.S$values[1:(J-Q)]))
     col.ctr   <- evd.S$vectors[,1:(J-Q)]^2
     row.ctr   <- (1/nrow(obj.num)) * row.pc^2 %*% diag(1/evd.S$values[1:(J-Q)])
@@ -227,7 +216,17 @@ mjca.default <- function(obj,
    # Subset analysis:
     if (!is.na(subsetcol)[1]){
       nd.max  <- min(length(ind.sub), J-Q)
-      evd.S   <- eigen(S[subsetcol,subsetcol])
+      if (!is.na(supcol)[1]){
+	    subsetcol.shift <- rep(0, length(subsetcol))
+		subsetcol.ranka <- rank(c(ind.sup,subsetcol))[1:length(ind.sup)]
+		subsetcol.rankb <- rank(c(ind.sup,subsetcol))[-(1:length(ind.sup))]
+		for (i in 1:length(ind.sup)){
+		  subsetcol.shift[subsetcol.rankb > subsetcol.ranka[1]] <- subsetcol.shift[subsetcol.rankb > subsetcol.ranka[1]] - 1
+		  }
+        evd.S   <- eigen(S[subsetcol+subsetcol.shift,subsetcol+subsetcol.shift])
+        } else {
+        evd.S   <- eigen(S[subsetcol,subsetcol])
+        }
       col.sc  <- diag(1 / sqrt(cm[subsetcol])) %*% evd.S$vectors[,1:nd.max] 
       col.pc  <- col.sc %*% diag(sqrt(evd.S$values[1:nd.max]))
       col.ctr <- evd.S$vectors[,1:nd.max]^2
@@ -247,7 +246,7 @@ mjca.default <- function(obj,
       row.cor <- row.pc^2 / apply(row.pc^2, 1, sum)
      # Subset & Supplementary variables:
       if(!is.na(supcol)[1]){
-        cols.pc  <- sweep((B.sup / apply(B.sup, 1, sum))[,subsetcol], 2, cm[subsetcol]) %*% col.sc
+        cols.pc  <- sweep((B.sup / apply(B.sup, 1, sum))[,subsetcol+subsetcol.shift], 2, cm[subsetcol+subsetcol.shift]) %*% col.sc
         cols.sc  <- cols.pc %*% diag(1/sqrt(evd.S$values[1:nd.max]))
         cols.cor <- cols.pc^2 / apply(cols.pc^2,1,sum)
         }
@@ -263,23 +262,39 @@ mjca.default <- function(obj,
  ##### 3.2: 'lambda' = "Burt"
     col.sc  <- diag(1/sqrt(cm)) %*% evd.S$vectors[,1:(J-Q)] 
     col.pc  <- col.sc %*% diag(evd.S$values[1:(J-Q)])
-    row.sc  <- col.sc
-    row.pc  <- col.pc
+###    row.sc  <- col.sc
+###    row.pc  <- col.pc
+    row.pc <- t(t(Z) %*% diag(1/apply(Z, 1, sum))) %*% col.sc
+	row.sc <- row.pc %*% diag(1/evd.S$values[1:(J-Q)])
     col.ctr <- evd.S$vectors[,1:(J-Q)]^2
     col.cor <- col.pc^2 / apply(col.pc^2, 1, sum)
    # Subset analysis:
     if (!is.na(subsetcol)[1]){
       nd.max  <- min(length(ind.sub), J-Q)
-      evd.S   <- eigen(S[subsetcol,subsetcol])
+#      evd.S   <- eigen(S[subsetcol,subsetcol])
+      if (!is.na(supcol)[1]){
+	    subsetcol.shift <- rep(0, length(subsetcol))
+		subsetcol.ranka <- rank(c(ind.sup,subsetcol))[1:length(ind.sup)]
+		subsetcol.rankb <- rank(c(ind.sup,subsetcol))[-(1:length(ind.sup))]
+		for (i in 1:length(ind.sup)){
+		  subsetcol.shift[subsetcol.rankb > subsetcol.ranka[1]] <- subsetcol.shift[subsetcol.rankb > subsetcol.ranka[1]] - 1
+		  }
+        evd.S   <- eigen(S[subsetcol+subsetcol.shift,subsetcol+subsetcol.shift])
+        } else {
+        evd.S   <- eigen(S[subsetcol,subsetcol])
+        }
       col.sc  <- diag(1/sqrt(cm[subsetcol])) %*% evd.S$vectors[,1:nd.max] 
       col.pc  <- col.sc %*% diag(evd.S$values[1:nd.max])
-      row.sc  <- col.sc
-      row.pc  <- col.pc
+###      row.sc  <- col.sc
+###      row.pc  <- col.pc
+      row.pc  <- t(t(Z[,subsetcol]) %*% diag(1/apply(Z[,subsetcol], 1, sum))) %*% col.sc
+      row.sc  <- row.pc %*% diag(1/evd.S$values[1:nd.max])
       col.ctr <- evd.S$vectors[,1:nd.max]^2
       col.cor <- col.pc^2 / apply(col.pc^2, 1, sum)
      # Subset & Supplementary variables:
       if(!is.na(supcol)[1]){
-        cols.pc  <- sweep((B.sup / apply(B.sup, 1, sum))[,subsetcol], 2, cm[subsetcol]) %*% col.sc
+        cols.pc  <- sweep((B.sup / apply(B.sup, 1, sum))[,subsetcol+subsetcol.shift], 2, cm[subsetcol+subsetcol.shift]) %*% col.sc
+#        cols.pc  <- sweep((B.sup / apply(B.sup, 1, sum))[,subsetcol], 2, cm[subsetcol]) %*% col.sc
         cols.sc  <- cols.pc %*% diag(1 / evd.S$values[1:nd.max])
         cols.cor <- cols.pc^2 / apply(cols.pc^2, 1, sum)
         }
@@ -316,8 +331,10 @@ mjca.default <- function(obj,
       inertia.adj <- sum(Se^2) * Q / (Q-1)
       col.sc      <- diag(1/sqrt(cm)) %*% evd.S.null$vectors[,1:K0] 
       col.pc      <- col.sc %*% diag(evd.S.null$values[1:K0])
-      row.sc      <- col.sc
-      row.pc      <- col.pc
+###      row.sc      <- col.sc
+###      row.pc      <- col.pc
+      row.pc <- t(t(Z) %*% diag(1/apply(Z, 1, sum))) %*% col.sc
+      row.sc <- row.pc %*% diag(1/evd.S.null$values[1:K0])
       col.ctr     <- evd.S.null$vectors[,1:K0]^2
       col.inr.adj <- apply(Se^2,2,sum) * Q/(Q-1)
       col.cor     <- diag(cm) %*% col.pc^2 / col.inr.adj
@@ -328,7 +345,11 @@ mjca.default <- function(obj,
       lambda0     <- lambda.adj
      # Subset analysis:
       if (!is.na(subsetcol)[1]){
-        evd.S0 <- eigen(S.null[subsetcol,subsetcol])
+	    if (!is.na(supcol)[1]){
+          evd.S0 <- eigen(S.null[subsetcol+subsetcol.shift,subsetcol+subsetcol.shift])
+		  } else {
+          evd.S0 <- eigen(S.null[subsetcol,subsetcol])
+		  }
         K0     <- length(which(evd.S0$values>1e-8))
         nd.max <- K0
         lookup <- offset.b[1:(Q+1)]
@@ -340,28 +361,39 @@ mjca.default <- function(obj,
         Se <- diag(sqrt(1/cm))%*%(Pe-cm%*%t(cm))%*%diag(sqrt(1/cm))
         lambda.adj <- evd.S0$values[1:K0]^2
         lambda0    <- lambda.adj
-        lambda.t   <- sum(Se[subsetcol,subsetcol]^2)*Q / (Q-1)
-        lambda.e   <- lambda.adj / lambda.t
-        col.sc     <- diag(1/sqrt(cm[subsetcol])) %*% evd.S0$vectors[,1:K0] 
+	    if (!is.na(supcol)[1]){
+          lambda.t   <- sum(Se[subsetcol+subsetcol.shift,subsetcol+subsetcol.shift]^2)*Q / (Q-1)
+          lambda.e   <- lambda.adj / lambda.t
+          col.sc     <- diag(1/sqrt(cm[subsetcol+subsetcol.shift])) %*% evd.S0$vectors[,1:K0] 
+		  } else {
+          lambda.t   <- sum(Se[subsetcol,subsetcol]^2)*Q / (Q-1)
+          lambda.e   <- lambda.adj / lambda.t
+          col.sc     <- diag(1/sqrt(cm[subsetcol])) %*% evd.S0$vectors[,1:K0] 
+		  }
        # fix: 
         if (K0 > 1){
           col.pc     <- col.sc %*% diag(evd.S0$values[1:K0])
           } else{
           col.pc     <- col.sc %*% matrix(evd.S0$values[1:K0])
           }
-        row.sc     <- col.sc
-        row.pc     <- col.pc
-        col.ctr    <- evd.S0$vectors[,1:K0]^2
-        col.inr.adj.subset <- apply(Se[subsetcol,subsetcol]^2, 2, sum) * Q/(Q-1)
-        col.cor    <- diag(cm[subsetcol]) %*% col.pc^2 / col.inr.adj.subset
+###        row.sc     <- col.sc
+###        row.pc     <- col.pc
+        row.pc <- t(t(Z[,subsetcol]) %*% diag(1/apply(Z[,subsetcol], 1, sum))) %*% col.sc
+        row.sc <- row.pc %*% diag(1/evd.S0$values[1:K0])
        # Subset & Supplementary variables:
         if(!is.na(supcol)[1]){
-          cols.pc  <- sweep((B.sup / apply(B.sup, 1, sum))[,subsetcol], 2, cm[subsetcol]) %*% col.sc
+          col.ctr  <- evd.S0$vectors[,1:K0]^2
+          col.inr.adj.subset <- apply(Se[subsetcol+subsetcol.shift,subsetcol+subsetcol.shift]^2, 2, sum) * Q/(Q-1)
+          cols.pc  <- sweep((B.sup / apply(B.sup, 1, sum))[,subsetcol+subsetcol.shift], 2, cm[subsetcol+subsetcol.shift]) %*% col.sc
           cols.sc  <- cols.pc %*% diag(1/evd.S0$values[1:K0])
-          cols.sqd <- apply((sweep(sweep((B.sup/apply(B.sup, 1, sum))[,subsetcol], 2, cm[subsetcol]), 2, 
-                                     sqrt(cm[subsetcol]), FUN="/"))^2, 1, sum)
+          cols.sqd <- apply((sweep(sweep((B.sup/apply(B.sup, 1, sum))[,subsetcol+subsetcol.shift], 2, cm[subsetcol+subsetcol.shift]), 2, 
+                                     sqrt(cm[subsetcol+subsetcol.shift]), FUN="/"))^2, 1, sum)
           cols.cor <- cols.pc^2 / cols.sqd
-          }
+          } else {
+          col.ctr    <- evd.S0$vectors[,1:K0]^2
+          col.inr.adj.subset <- apply(Se[subsetcol,subsetcol]^2, 2, sum) * Q/(Q-1)
+          col.cor    <- diag(cm[subsetcol]) %*% col.pc^2 / col.inr.adj.subset
+		  }
         } # End Subset
      # Supplementary points:
       if (!is.na(supcol)[1] & is.na(subsetcol)[1]){
@@ -387,8 +419,10 @@ mjca.default <- function(obj,
         lambda0 <- (dec$values[1:nd.max])^2
         col.sc  <- as.matrix(dec$vectors[,1:nd.max]) / sqrt(cm)
         col.pc  <- col.sc %*% diag(sqrt(lambda0))
-        row.sc  <- col.sc
-        row.pc  <- col.pc
+###        row.sc  <- col.sc
+###        row.pc  <- col.pc
+        row.pc <- t(t(Z) %*% diag(1/apply(Z, 1, sum))) %*% col.sc
+        row.sc <- row.pc %*% diag(1/sqrt(lambda0))
         inertia.mod      <- sum(subin - diag(diag(subin)))
         inertia.discount <- sum(diag(subin))
         inertia.expl     <- (sum(lambda0[1:nd]) - inertia.discount) / inertia.adj
@@ -410,12 +444,17 @@ mjca.default <- function(obj,
        # Subset analysis:
         if (!is.na(subsetcol)[1]){
          # template matrix:
-          foo0 <- rep(1:Q.sub, each = levels.n.sub)
+ #          foo0 <- rep(1:Q.sub, each = levels.n.sub)
+          foo0 <- rep(1:Q.sub, levels.n.sub)
           foo1 <- (foo0) %*% t(rep(1, sum(levels.n.sub))) - t((foo0) %*% 
                     t(rep(1, sum(levels.n.sub))))
           upd.template <- ifelse(foo1 == 0, TRUE, FALSE)
           cat.template <- rep(FALSE, J)
-          cat.template[subsetcol] <- TRUE
+		  if (!is.na(supcol)[1]){
+		    cat.template[subsetcol + subsetcol.shift] <- TRUE
+		    } else {
+            cat.template[subsetcol] <- TRUE
+			}
           Bsub.margin     <- apply(B.star, 1, sum) / sum(B.star)
           Bsub.red.margin <- Bsub.margin[cat.template]
           Bsub.red        <- B.star[cat.template,cat.template]
@@ -452,8 +491,10 @@ mjca.default <- function(obj,
           inertia.adj.red.subset   <- sum(Bsub.red.S^2) - inertia.adj.red.discount
           col.sc  <- sqrt(1/cm[cat.template]) * Bsub.red.SVD$v[,1:nd]
           col.pc  <- col.sc %*% diag(Bsub.red.SVD$d[1:nd])
-          row.sc  <- col.sc
-          row.pc  <- col.pc
+###          row.sc  <- col.sc
+###          row.pc  <- col.pc
+          row.pc <- t(t(Z[,subsetcol]) %*% diag(1/apply(Z[,subsetcol], 1, sum))) %*% col.sc
+          row.sc <- row.pc %*% diag(1/Bsub.red.SVD$d[1:nd])
           Sm      <- Bsub.red.S
           inertia.col.red.discount <- apply((upd.template * Sm)^2, 2, sum )
           inertia.col.red.adj      <- apply(Sm^2, 2, sum) - inertia.col.red.discount 
@@ -482,14 +523,30 @@ mjca.default <- function(obj,
     } # END else if "indicator"
 
   if (!is.na(supcol)[1]){
+#    colcoord  <- rbind(col.sc, cols.sc)
+#    colpcoord <- rbind(col.pc, cols.pc)
     colcoord  <- rbind(col.sc, cols.sc)
+	colcoord[ind.sup,]  <- cols.sc
+	colcoord[-ind.sup,] <- col.sc
     colpcoord <- rbind(col.pc, cols.pc)
+	colpcoord[ind.sup,]  <- cols.pc
+	colpcoord[-ind.sup,] <- col.pc
     if (lambda != "JCA"){
-      col.ctr <- rbind(col.ctr, matrix(NA, nrow = length(ind.sup),  ncol = ncol(col.ctr)))
+      colctr <- rbind(col.ctr, matrix(NA, nrow = length(ind.sup),  ncol = ncol(col.ctr)))
+      colctr[ind.sup,]  <- matrix(NA, nrow = length(ind.sup),  ncol = ncol(col.ctr))
+      colctr[-ind.sup,] <- col.ctr
+      col.ctr  <- colctr
       colcor  <- rbind(col.cor, cols.cor)
+      colcor[ind.sup,]  <- cols.cor
+      colcor[-ind.sup,] <- col.cor
       } else {
-      col.ctr <- c(col.ctr, rep(NA, length(ind.sup)))
+      colctr <- c(col.ctr, rep(NA, length(ind.sup)))
+      colctr[ind.sup]  <- rep(NA, length(ind.sup))
+      colctr[-ind.sup] <- col.ctr
+      col.ctr <- colctr
       colcor  <- c(col.cor, cols.cor)
+      colcor[ind.sup]  <- cols.cor
+      colcor[-ind.sup] <- col.cor
       }
     } else {
     colcoord  <- col.sc
@@ -514,9 +571,21 @@ mjca.default <- function(obj,
   rowpcoord <- row.pc
 
   if(!is.na(supcol)[1]){
-    colinertia <- c(colinertia, rep(NA, J.sup))
-    coldist    <- c(coldist, rep(NA, J.sup))
-    cm         <- c(cm, rep(NA, J.sup))
+ #   colinertia <- c(colinertia, rep(NA, J.sup))
+ #   coldist    <- c(coldist, rep(NA, J.sup))
+ #   cm         <- c(cm, rep(NA, J.sup))
+    colinertia0          <- rep(0, length(ind.0))
+    colinertia0[ind]     <- colinertia
+    colinertia0[ind.sup] <- NA
+    colinertia        <- colinertia0
+    coldist0          <- rep(0, length(ind.0))
+    coldist0[ind]     <- coldist
+    coldist0[ind.sup] <- NA
+    coldist <- coldist0
+    cm0          <- rep(0, length(ind.0))
+    cm0[ind]     <- cm
+    cm0[ind.sup] <- NA
+    cm           <- cm0
     }
   col.names <- col.names0
  # (2014-10, returning Indicator matrix)

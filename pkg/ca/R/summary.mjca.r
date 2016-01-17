@@ -127,4 +127,4 @@ summary.mjca <- function(object, scree = TRUE, rows = FALSE, columns = TRUE, ...
   class(out) <- "summary.mjca"
   return(out)
   }
-################################################################################
+

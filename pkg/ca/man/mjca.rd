@@ -98,34 +98,31 @@ reporting inertias.
 data("wg93")
 mjca(wg93[,1:4])
 
+# table input
+data(UCBAdmissions)
+mjca(UCBAdmissions)
+\dontrun{plot(mjca(UCBAdmissions))}
+
 ### Different approaches to multiple correspondence analysis:
 # Multiple correspondence analysis based on the indicator matrix:
-mjca(wg93[,1:4], lambda = "indicator")
+\dontrun{mjca(wg93[,1:4], lambda = "indicator")}
 
 # Multiple correspondence analysis based on the Burt matrix:
-mjca(wg93[,1:4], lambda = "Burt")
+\dontrun{mjca(wg93[,1:4], lambda = "Burt")}
 
 # "Adjusted" multiple correspondence analysis (default setting):
-mjca(wg93[,1:4], lambda = "adjusted")
+\dontrun{mjca(wg93[,1:4], lambda = "adjusted")}
 
 # Joint correspondence analysis:
-mjca(wg93[,1:4], lambda = "JCA")
+\dontrun{mjca(wg93[,1:4], lambda = "JCA")}
 
 
 ### Subset analysis and supplementary variables:
 # Subset analysis:
-mjca(wg93[,1:4], subsetcol = (1:20)[-seq(3,18,5)])
+\dontrun{mjca(wg93[,1:4], subsetcol = (1:20)[-seq(3,18,5)])}
 
 # Supplementary variables:
-mjca(wg93, supcol = 5:7)
-
-# Combining supplementary variables and a subset analysis:
-mjca(wg93, supcol = 5:7, subsetcol = (1:20)[-seq(3,18,5)]) 
-
-# table input
-data(UCBAdmissions)
-mjca(UCBAdmissions)
-plot(mjca(UCBAdmissions))
+\dontrun{mjca(wg93, supcol = 5:7)}
 
  }
 \keyword{multivariate}
