@@ -25,19 +25,23 @@ cacoord <- function(obj,
              cols = NA,
              ...){
 
-  if (!inherits(obj, c("ca", "mjca"))) stop("'obj' must be a 'ca' or 'mjca' object")
+  if (!inherits(obj, c("ca", "mjca"))){
+    stop("'obj' must be a 'ca' or 'mjca' object")
+    }
   map <- match.arg(type)
   if (is.na(rows) & is.na(cols)){
     rows <- TRUE
     cols <- TRUE
     } else{
-    if (is.na(rows)){
+    if (is.na(rows) | !rows){
       rows         <- FALSE
+      cols         <- TRUE
       obj$rowcoord <- matrix(rep(0, ncol(obj$colcoord)), nrow = 1)
       obj$rowmass  <- 1
       }
-    if (is.na(cols)){
+    if (is.na(cols) | !cols){
       cols         <- FALSE
+      rows         <- TRUE
       obj$colcoord <- matrix(rep(0, ncol(obj$rowcoord)), nrow = 1)
       obj$colmass  <- 1
       }
@@ -98,10 +102,10 @@ cacoord <- function(obj,
       } else {
       symrpc <- rsc %*% diag(sqrt(sv))
       symcpc <- csc %*% diag(sqrt(sv))
-      rgab   <- t(t(rsc) %*% diag(obj$rowmass))
-      cgab   <- t(t(csc) %*% diag(obj$colmass))
-      rgreen <- t(t(rsc) %*% diag(sqrt(obj$rowmass)))
-      cgreen <- t(t(csc) %*% diag(sqrt(obj$colmass)))
+      rgab   <- rsc * matrix(obj$rowmass, ncol = ncol(rsc), nrow = nrow(rsc))
+      cgab   <- csc * matrix(obj$colmass, ncol = ncol(csc), nrow = nrow(csc))
+      rgreen <- rsc * matrix(sqrt(obj$rowmass), ncol = ncol(rsc), nrow = nrow(rsc))
+      cgreen <- csc * matrix(sqrt(obj$colmass), ncol = ncol(csc), nrow = nrow(csc))
      # Maptype LUT
       mt    <- c("symmetric", "rowprincipal", "colprincipal", "symbiplot", 
                  "rowgab", "colgab", "rowgreen", "colgreen")

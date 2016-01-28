@@ -264,7 +264,8 @@ mjca.default <- function(obj,
     col.pc  <- col.sc %*% diag(evd.S$values[1:(J-Q)])
 ###    row.sc  <- col.sc
 ###    row.pc  <- col.pc
-    row.pc <- t(t(Z) %*% diag(1/apply(Z, 1, sum))) %*% col.sc
+#mjca2#    row.pc <- t(t(Z) %*% diag(1/apply(Z, 1, sum))) %*% col.sc
+    row.pc <- (Z/Q) %*% col.sc
 	row.sc <- row.pc %*% diag(1/evd.S$values[1:(J-Q)])
     col.ctr <- evd.S$vectors[,1:(J-Q)]^2
     col.cor <- col.pc^2 / apply(col.pc^2, 1, sum)
@@ -287,7 +288,8 @@ mjca.default <- function(obj,
       col.pc  <- col.sc %*% diag(evd.S$values[1:nd.max])
 ###      row.sc  <- col.sc
 ###      row.pc  <- col.pc
-      row.pc  <- t(t(Z[,subsetcol]) %*% diag(1/apply(Z[,subsetcol], 1, sum))) %*% col.sc
+#mjca2#      row.pc  <- t(t(Z[,subsetcol]) %*% diag(1/apply(Z[,subsetcol], 1, sum))) %*% col.sc
+      row.pc <- (Z/Q) %*% col.sc
       row.sc  <- row.pc %*% diag(1/evd.S$values[1:nd.max])
       col.ctr <- evd.S$vectors[,1:nd.max]^2
       col.cor <- col.pc^2 / apply(col.pc^2, 1, sum)
@@ -333,7 +335,8 @@ mjca.default <- function(obj,
       col.pc      <- col.sc %*% diag(evd.S.null$values[1:K0])
 ###      row.sc      <- col.sc
 ###      row.pc      <- col.pc
-      row.pc <- t(t(Z) %*% diag(1/apply(Z, 1, sum))) %*% col.sc
+#mjca2#      row.pc <- t(t(Z) %*% diag(1/apply(Z, 1, sum))) %*% col.sc
+      row.pc <- (Z/Q) %*% col.sc
       row.sc <- row.pc %*% diag(1/evd.S.null$values[1:K0])
       col.ctr     <- evd.S.null$vectors[,1:K0]^2
       col.inr.adj <- apply(Se^2,2,sum) * Q/(Q-1)
@@ -378,7 +381,8 @@ mjca.default <- function(obj,
           }
 ###        row.sc     <- col.sc
 ###        row.pc     <- col.pc
-        row.pc <- t(t(Z[,subsetcol]) %*% diag(1/apply(Z[,subsetcol], 1, sum))) %*% col.sc
+#mjca2#        row.pc <- t(t(Z[,subsetcol]) %*% diag(1/apply(Z[,subsetcol], 1, sum))) %*% col.sc
+        row.pc <- (Z/Q) %*% col.sc
         row.sc <- row.pc %*% diag(1/evd.S0$values[1:K0])
        # Subset & Supplementary variables:
         if(!is.na(supcol)[1]){
@@ -421,7 +425,8 @@ mjca.default <- function(obj,
         col.pc  <- col.sc %*% diag(sqrt(lambda0))
 ###        row.sc  <- col.sc
 ###        row.pc  <- col.pc
-        row.pc <- t(t(Z) %*% diag(1/apply(Z, 1, sum))) %*% col.sc
+#mjca2#        row.pc <- t(t(Z) %*% diag(1/apply(Z, 1, sum))) %*% col.sc
+        row.pc <- (Z/Q) %*% col.sc
         row.sc <- row.pc %*% diag(1/sqrt(lambda0))
         inertia.mod      <- sum(subin - diag(diag(subin)))
         inertia.discount <- sum(diag(subin))
@@ -493,7 +498,8 @@ mjca.default <- function(obj,
           col.pc  <- col.sc %*% diag(Bsub.red.SVD$d[1:nd])
 ###          row.sc  <- col.sc
 ###          row.pc  <- col.pc
-          row.pc <- t(t(Z[,subsetcol]) %*% diag(1/apply(Z[,subsetcol], 1, sum))) %*% col.sc
+#mjca2#          row.pc <- t(t(Z[,subsetcol]) %*% diag(1/apply(Z[,subsetcol], 1, sum))) %*% col.sc
+          row.pc <- (Z/Q) %*% col.sc
           row.sc <- row.pc %*% diag(1/Bsub.red.SVD$d[1:nd])
           Sm      <- Bsub.red.S
           inertia.col.red.discount <- apply((upd.template * Sm)^2, 2, sum )
