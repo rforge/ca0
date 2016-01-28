@@ -12,7 +12,7 @@ available via \code{\link{plot.mjca}}.
 
 }
 \usage{
-multilines(XY, group, sort = 1, type = "l", col = palette(), lwd = 1, ...)
+multilines(XY, group=NULL, which=1:nf, sort=1, type='l', col=palette(), lwd=1, ...) 
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -20,8 +20,13 @@ multilines(XY, group, sort = 1, type = "l", col = palette(), lwd = 1, ...)
 A two-column data frame or matrix
 }
   \item{group}{
-A factor; a separate line is drawn for each level.
+A factor; a separate line is drawn for each level included in \code{which}
 }
+  \item{which}{
+An integer vector used to select the factors for which lines are drawn.
+By default, all lines are drawn.
+}
+
   \item{sort}{
 Column of \code{XY} to sort upon before drawing the line for each group
 }
@@ -29,13 +34,14 @@ Column of \code{XY} to sort upon before drawing the line for each group
 Line type: \code{"l"} for line, \code{"b"} for line and points
 }
   \item{col}{
-A vector of colors to be used for the various lines; recycled as necessary
+A vector of colors to be used for the various lines, in the order of the levels
+in \code{group}; recycled as necessary.
 }
   \item{lwd}{
 A vector of line widths to be used for the various lines; recycled as necessary
 }
   \item{\dots}{
-Other graphic parameters passed to \code{\link[graphics]{lines}}
+Other graphic parameters passed to \code{\link[graphics]{lines}}, e.g., \code{lty}
 }
 }
 %\details{
