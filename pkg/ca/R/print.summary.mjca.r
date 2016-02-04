@@ -93,7 +93,8 @@ print.summary.mjca <- function(x, ...){
       } else {
       cat("Principal inertias (eigenvalues):\n\n")
       scree.out <- as.matrix(scree.out[,1:2])
-      dimnames(scree.out)[[1]] <- rep("", length(dimnames(scree.out)[[1]]))
+#      dimnames(scree.out)[[1]] <- rep("", length(dimnames(scree.out)[[1]]))
+      rownames(scree.out) <- rep("", nrow(scree.out))
       print(as.matrix(scree.out), quote = FALSE)
       cat(paste("\n Diagonal inertia discounted from eigenvalues: ", round(object$JCA.ind, 7), sep = ""))
       cat(paste("\n Percentage explained by JCA in ", object$JCA.nd, " dimensions: ", sev, "%", sep = ""))

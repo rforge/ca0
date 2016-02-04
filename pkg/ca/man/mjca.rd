@@ -18,7 +18,7 @@ mjca(obj, ...)
 \method{mjca}{array}(obj, ...)
 
 \method{mjca}{default}(obj, nd = 2, lambda = c("adjusted", "indicator", "Burt", "JCA"), 
-     supcol = NA, subsetcol = NA, 
+     supcol = NA, subsetcat = NA, 
      ps = ":", maxit = 50, epsilon = 0.0001, reti = FALSE, ...)
 
 }
@@ -30,7 +30,7 @@ mjca(obj, ...)
   \item{lambda   }{Gives the scaling method. Possible values include \kbd{"indicator"}, \kbd{"Burt"}, \kbd{"adjusted"} and \kbd{"JCA"}.
                 Using \kbd{lambda = "JCA"} results in a joint correspondence analysis using iterative adjusment of the Burt matrix in the solution space. See Details for descriptions of these options.}
   \item{supcol   }{Indices of supplementary columns.}
-  \item{subsetcol}{Indices of subset categories.}
+  \item{subsetcat}{Indices of subset categories (previously \kbd{subsetcol}).}
   \item{ps       }{Separator used for combining variable and category names.}
   \item{maxit    }{The maximum number of iterations (Joint Correspondence Analysis).}
   \item{epsilon  }{A convergence criterion (Joint Correspondence Analysis).}
@@ -79,7 +79,7 @@ reporting inertias.
   \item{colctr     }{column contributions}
   \item{colcor     }{Column squared correlations}
   \item{colsup     }{Indices of column supplementary points (of the Burt and Indicator matrix)}
-  \item{subsetcol  }{Indices of subset columns}
+  \item{subsetcol  }{Indices of subset columns (\kbd{subsetcat})}
   \item{Burt       }{Burt matrix}
   \item{Burt.upd   }{The updated Burt matrix (JCA only)}
   \item{subinertia }{Inertias of sub-matrices}
@@ -119,7 +119,7 @@ mjca(UCBAdmissions)
 
 ### Subset analysis and supplementary variables:
 # Subset analysis:
-\dontrun{mjca(wg93[,1:4], subsetcol = (1:20)[-seq(3,18,5)])}
+\dontrun{mjca(wg93[,1:4], subsetcat = (1:20)[-seq(3,18,5)])}
 
 # Supplementary variables:
 \dontrun{mjca(wg93, supcol = 5:7)}

@@ -12,7 +12,7 @@
                ...)}
 \arguments{
   \item{obj }{A \kbd{ca} or \kbd{mjca} object returned by \code{\link{ca}} or \code{\link{mjca}}.}
-  \item{type}{The type of coordinates to extract (\kbd{"standard"} or \kbd{"principal"}). The remaining options (\kbd{"symmetric"}, ..., \kbd{"colgreen"}) return the corresponding row/column coordinate configuration for the map scaling options described in \code{\link{plot.ca}}.}
+  \item{type}{The type of coordinates to extract (\kbd{"standard"} or \kbd{"principal"}). The remaining options (\kbd{"symmetric"}, ..., \kbd{"colgreen"}) return the corresponding row/column coordinate configuration for the map scaling options described in \code{\link{plot.ca}} where the corresponding argument is \kbd{map}.}
   \item{dim }{The dimensions to return. If \kbd{NA}, all available dimensions are returned.}
   \item{rows}{Logical indicating whether to return the row coordinates (see below for details).}
   \item{cols}{Logical indicating whether to return the column coordinates (see below for details).}

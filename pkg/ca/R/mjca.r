@@ -26,15 +26,16 @@ mjca.default <- function(obj,
                  nd        = 2, 
                  lambda    = c("adjusted", "indicator", "Burt", "JCA"), 
                  supcol    = NA, 
-                 subsetcol = NA, 
+                 subsetcat = NA, 
                  ps        = ":", 
                  maxit     = 50, 
                  epsilon   = 0.0001, 
                  reti      = FALSE,
                  ...){
 ##### Part 1: Input checks:
-  lambda <- match.arg(lambda)
-  obj    <- data.frame(lapply(data.frame(obj), factor)) 
+  lambda    <- match.arg(lambda)
+  obj       <- data.frame(lapply(data.frame(obj), factor)) 
+  subsetcol <- subsetcat
 
 ##### Part 2: Data preparation
  # Indicator and Burt matrix:
