@@ -34,14 +34,16 @@ mjca.default <- function(obj,
                  ...){
 ##### Part 1: Input checks:
   lambda    <- match.arg(lambda)
+#0.65:
+  rn.0      <- dimnames(obj)[[1]]
+  cn.0      <- dimnames(obj)[[2]]
+##0.65
   obj       <- data.frame(lapply(data.frame(obj), factor)) 
   subsetcol <- subsetcat
 
 ##### Part 2: Data preparation
  # Indicator and Burt matrix:
   levels.n.0  <- unlist(lapply(obj, nlevels))
-  rn.0        <- dimnames(obj)[[1]]
-  cn.0        <- dimnames(obj)[[2]]
   n.0         <- cumsum(levels.n.0)
   I.0         <- dim(obj)[1]
   Q.0         <- dim(obj)[2]
