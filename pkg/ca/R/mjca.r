@@ -430,8 +430,8 @@ mjca.default <- function(obj,
         JCA.it  <- B.it[[2]]
         subin   <- subinr(B.star, levels.n)
 # 0.65:
-        colnames(B.star) <- col.names
-        rownames(B.star) <- col.names
+#        colnames(B.star) <- col.names
+#        rownames(B.star) <- col.names
 ##0.65:
         P       <- B.star / sum(B.star)
         cm      <- apply(P, 2, sum)
@@ -661,8 +661,16 @@ for (qstmp0 in 1:length(levels.n.sub)){
     } else { 
     dimnames(B.out) <- list(col.names, col.names)
     }
-  colnames(subin) <- cn.0
-  rownames(subin) <- cn.0
+### 0.70 fix 
+#  colnames(subin) <- cn.0
+#  rownames(subin) <- cn.0
+  if (is.na(supcol[1])){
+    colnames(subin) <- cn.0
+    rownames(subin) <- cn.0
+    } else {
+    colnames(subin) <- cn.0[-supcol]
+    rownames(subin) <- cn.0[-supcol]
+    }
  # wrap up results
   mjca.output <- list(sv         = sqrt(lambda0), 
                       lambda     = lambda,

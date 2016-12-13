@@ -1,3 +1,6 @@
+Version 0.70 (2016-12-11)
+o Fixed a number of issues with supplementary points/subset analyses
+
 Version 0.65 (2016-05-15)
 o Fixed issue wirth subset MCA (computing row coordinates gave an error 'Error in (Z/Q) %*% col.sc [...]')
 o Added row-and columnnames for returned matrices (indicator, Burt, 'subinertia') in MCA
